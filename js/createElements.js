@@ -7,6 +7,36 @@ const likedPet = (image) => {
   `;
 };
 
+// Adop pet
+const adoptPet = (id) => {
+  document.querySelector("#adopt-pet-modal-div").innerHTML = "";
+
+  document.querySelector("#adopt-pet-modal-div").innerHTML = `
+  <dialog id="adopt_modal_1" class="modal">
+    <div class="modal-box">
+      <h3 class="text-lg font-bold">Congratulation!</h3>
+      <p class="py-4">You have successfully adopted!</p>
+      <h3 class="text-lg font-bold">Closing after <span id='adopt-closing-timer'>3</span> </h3>
+    </div>
+  </dialog>
+  `;
+
+  document.querySelector("#adopt_modal_1").showModal();
+
+  let cnt = 2;
+  const intervaleId = setInterval(() => {
+    document.querySelector("#adopt-closing-timer").innerText = cnt;
+    cnt--;
+  }, 1000);
+
+  setTimeout(() => {
+    clearInterval(intervaleId);
+    document.querySelector("#adopt-pet-modal-div").innerHTML = "";
+    document.querySelector(`#btn-adop-${id}`).innerText = "Adopted";
+    document.querySelector(`#btn-adop-${id}`).classList.add("btn-disabled");
+  }, 2000);
+};
+
 // Create pet card
 const createPetCard = (pets) => {
   document.querySelector("#pet-showing-cards").innerHTML = "";
@@ -14,7 +44,8 @@ const createPetCard = (pets) => {
   const grid = document.querySelector("#pet-showing-cards");
 
   if (!pets.length) {
-    grid.classList = "pets lg:w-5/6 h-fit text-center bg-slate-200 p-4 rounded-md";
+    grid.classList =
+      "pets lg:w-5/6 h-fit text-center bg-slate-200 p-4 rounded-md";
 
     document.querySelector("#pet-showing-cards").innerHTML = `
       <img class='mx-auto' src='./images/error.webp' alt='error logo'/>
@@ -76,7 +107,9 @@ const createPetCard = (pets) => {
           }")'>
             <img src="./images/svg/like.svg" alt="like" />
           </button>
-          <button class="btn btn-sm btn-outline btn-accent">Adopt</button>
+          <button class="btn btn-sm btn-outline btn-accent" id="btn-adop-${
+            pet.petId
+          }" onClick='adoptPet(${pet.petId})'>Adopt</button>
           <button class="btn btn-sm btn-outline btn-accent" onClick='fetchExpectedPet(${
             pet.petId
           })'>Details</button>
