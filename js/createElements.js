@@ -1,3 +1,12 @@
+// Liked pet
+const likedPet = (image) => {
+  document.querySelector("#liked-pets").classList.remove("hidden");
+
+  document.querySelector("#liked-pets").innerHTML += `
+    <img src=${image} class='w-full rounded-lg border p-2' alt='pet'/>
+  `;
+};
+
 // Create pet card
 const createPetCard = (pets) => {
   document.querySelector("#pet-showing-cards").innerHTML = "";
@@ -5,7 +14,7 @@ const createPetCard = (pets) => {
   const grid = document.querySelector("#pet-showing-cards");
 
   if (!pets.length) {
-    grid.classList = "pets lg:w-4/6 text-center bg-slate-200 p-4 rounded-md";
+    grid.classList = "pets lg:w-5/6 h-fit text-center bg-slate-200 p-4 rounded-md";
 
     document.querySelector("#pet-showing-cards").innerHTML = `
       <img class='mx-auto' src='./images/error.webp' alt='error logo'/>
@@ -15,11 +24,11 @@ const createPetCard = (pets) => {
     `;
   } else {
     grid.classList =
-      "pets lg:w-4/6 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-4";
+      "pets lg:w-5/6 h-fit grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-4";
 
     pets.forEach((pet) => {
       const card = document.createElement("div");
-      card.classList = "max-w-60 mx-auto border rounded-xl p-4 box-border";
+      card.classList = "max-w-[275px] mx-auto border rounded-xl p-4 box-border";
 
       card.innerHTML = `
     <img class="w-full h-40 rounded-md" src=${pet.image} alt="pet" />
@@ -61,8 +70,10 @@ const createPetCard = (pets) => {
           </li>
         </ul>
         <div class="divider"></div>
-        <div class="flex items-center justify-between">
-          <button class="btn btn-sm btn-outline btn-accent">
+        <div class="flex items-center justify-between space-x-2">
+          <button class="btn btn-sm btn-outline btn-accent" onClick='likedPet("${
+            pet.image
+          }")'>
             <img src="./images/svg/like.svg" alt="like" />
           </button>
           <button class="btn btn-sm btn-outline btn-accent">Adopt</button>
@@ -80,7 +91,7 @@ const createPetCard = (pets) => {
 // Show loading state
 const showLoadingState = (pets) => {
   document.querySelector("#pet-showing-cards").classList =
-    "pets lg:w-4/6 flex items-center justify-center";
+    "pets lg:w-5/6 h-fit flex items-center justify-center";
 
   document.querySelector("#pet-showing-cards").innerHTML = `
     <span class="loading loading-bars loading-lg"></span>
