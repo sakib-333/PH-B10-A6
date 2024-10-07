@@ -20,6 +20,6 @@ const fetchAllPets = (url) => {
       }
       return res.json();
     })
-    .then((json) => createPetCard(json.pets))
+    .then((json) => showLoadingState(json.pets))
     .catch((err) => console.log(err));
 };

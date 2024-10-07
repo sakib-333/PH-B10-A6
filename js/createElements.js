@@ -5,7 +5,7 @@ const createPetCard = (pets) => {
   const grid = document.querySelector("#pet-showing-cards");
 
   if (!pets.length) {
-    grid.classList = "pets lg:w-4/6 text-center bg-slate-200";
+    grid.classList = "pets lg:w-4/6 text-center bg-slate-200 p-4 rounded-md";
 
     document.querySelector("#pet-showing-cards").innerHTML = `
       <img class='mx-auto' src='./images/error.webp' alt='error logo'/>
@@ -77,6 +77,20 @@ const createPetCard = (pets) => {
   }
 };
 
+// Show loading state
+const showLoadingState = (pets) => {
+  document.querySelector("#pet-showing-cards").classList =
+    "pets lg:w-4/6 flex items-center justify-center";
+
+  document.querySelector("#pet-showing-cards").innerHTML = `
+    <span class="loading loading-bars loading-lg"></span>
+  `;
+
+  setTimeout(() => {
+    createPetCard(pets);
+  }, 2000);
+};
+
 // Show active category
 const showActiveCategory = (id, category) => {
   for (let i = 0; i < 4; i++) {
@@ -93,7 +107,7 @@ const showActiveCategory = (id, category) => {
       }
       return res.json();
     })
-    .then((json) => createPetCard(json.data))
+    .then((json) => showLoadingState(json.data))
     .catch((err) => console.log(err));
 };
 
