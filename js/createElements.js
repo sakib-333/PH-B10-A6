@@ -1,3 +1,5 @@
+let selectedPets = [];
+
 // Liked pet
 const likedPet = (image) => {
   document.querySelector("#liked-pets").classList.remove("hidden");
@@ -39,6 +41,7 @@ const adoptPet = (id) => {
 
 // Create pet card
 const createPetCard = (pets) => {
+  selectedPets = pets;
   document.querySelector("#pet-showing-cards").innerHTML = "";
 
   const grid = document.querySelector("#pet-showing-cards");
