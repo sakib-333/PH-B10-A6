@@ -1,11 +1,100 @@
+// Create pet card
+const createPetCard = (pets) => {
+  document.querySelector("#pet-showing-cards").innerHTML = "";
+
+  const grid = document.querySelector("#pet-showing-cards");
+
+  if (!pets.length) {
+    grid.classList = "pets lg:w-4/6 text-center bg-slate-200";
+
+    document.querySelector("#pet-showing-cards").innerHTML = `
+      <img class='mx-auto' src='./images/error.webp' alt='error logo'/>
+      <h1 class='text-2xl font-bold'>No Information Available</h1>
+      <p>It is a long established fact that a reader will be distracted by the readable content of a page when looking at 
+      its layout. The point of using Lorem Ipsum is that it has a.</p>
+    `;
+  } else {
+    grid.classList =
+      "pets lg:w-4/6 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-4";
+
+    pets.forEach((pet) => {
+      const card = document.createElement("div");
+      card.classList = "max-w-60 mx-auto border rounded-xl p-4 box-border";
+
+      card.innerHTML = `
+    <img class="w-full h-40 rounded-md" src=${pet.image} alt="pet" />
+      <div>
+        <h1 class="text-2xl font-bold">${pet.pet_name}</h1>
+        <ul class='text-sm'>
+          <li class="flex space-x-1">
+            <img src="./images/svg/breed.svg" alt="breed" />
+            <span>Breed: ${
+              typeof pet.breed === "undefined" || pet.breed === null
+                ? "Not available"
+                : pet.breed
+            }</span>
+          </li>
+          <li class="flex space-x-1">
+            <img src="./images/svg/calender.svg" alt="calender" />
+            <span>Birth: ${
+              typeof pet.date_of_birth === "undefined" ||
+              pet.date_of_birth === null
+                ? "Not available"
+                : pet.date_of_birth
+            }</span>
+          </li>
+          <li class="flex space-x-1">
+            <img src="./images/svg/gender.svg" alt="gender" />
+            <span>Gender: ${
+              typeof pet.gender === "undefined" || pet.gender === null
+                ? "Not available"
+                : pet.gender
+            }</span>
+          </li>
+          <li class="flex space-x-1">
+            <img src="./images/svg/price.svg" alt="price" />
+            <span>Price : ${
+              typeof pet.price === "undefined" || pet.price === null
+                ? "Not available"
+                : pet.price + "$"
+            }</span>
+          </li>
+        </ul>
+        <div class="divider"></div>
+        <div class="flex items-center justify-between">
+          <button class="btn btn-sm btn-outline btn-accent">
+            <img src="./images/svg/like.svg" alt="like" />
+          </button>
+          <button class="btn btn-sm btn-outline btn-accent">Adopt</button>
+          <button class="btn btn-sm btn-outline btn-accent" onClick='fetchExpectedPet(${
+            pet.petId
+          })'>Details</button>
+        </div>
+      </div>
+    `;
+      document.querySelector("#pet-showing-cards").append(card);
+    });
+  }
+};
+
 // Show active category
-const showActiveCategory = (id) => {
+const showActiveCategory = (id, category) => {
   for (let i = 0; i < 4; i++) {
     document
       .querySelector(`#btn-category-${i + 1}`)
       .classList.remove("bg-teal-500");
   }
   document.querySelector(`#btn-category-${id}`).classList.add("bg-teal-500");
+
+  fetch(`https://openapi.programming-hero.com/api/peddy/category/${category}`)
+    .then((res) => {
+      if (!res.ok) {
+        throw new Error("Something went wrong");
+      }
+      return res.json();
+    })
+    .then((json) => createPetCard(json.data))
+    .catch((err) => console.log(err));
 };
 
 // Create category
@@ -19,7 +108,7 @@ const createCategory = (categories) => {
     div.innerHTML = `
         <img class='w-8' src=${category_icon}/> <span class='font-bold hidden md:inline'>${category}</span>
     `;
-    div.addEventListener("click", () => showActiveCategory(id));
+    div.addEventListener("click", () => showActiveCategory(id, category));
     document.querySelector("#pet-category").append(div);
   });
 };
@@ -117,65 +206,4 @@ const fetchExpectedPet = (id) => {
     })
     .then((json) => showPetInModal(json.petData))
     .catch((err) => console.log(err));
-};
-
-// Create pet card
-const createPetCard = (pets) => {
-  pets.forEach((pet) => {
-    const card = document.createElement("div");
-    card.classList = "max-w-60 mx-auto border rounded-xl p-4 box-border";
-
-    card.innerHTML = `
-    <img class="w-full h-40 rounded-md" src=${pet.image} alt="pet" />
-      <div>
-        <h1 class="text-2xl font-bold">${pet.pet_name}</h1>
-        <ul class='text-sm'>
-          <li class="flex space-x-1">
-            <img src="./images/svg/breed.svg" alt="breed" />
-            <span>Breed: ${
-              typeof pet.breed === "undefined" || pet.breed === null
-                ? "Not available"
-                : pet.breed
-            }</span>
-          </li>
-          <li class="flex space-x-1">
-            <img src="./images/svg/calender.svg" alt="calender" />
-            <span>Birth: ${
-              typeof pet.date_of_birth === "undefined" ||
-              pet.date_of_birth === null
-                ? "Not available"
-                : pet.date_of_birth
-            }</span>
-          </li>
-          <li class="flex space-x-1">
-            <img src="./images/svg/gender.svg" alt="gender" />
-            <span>Gender: ${
-              typeof pet.gender === "undefined" || pet.gender === null
-                ? "Not available"
-                : pet.gender
-            }</span>
-          </li>
-          <li class="flex space-x-1">
-            <img src="./images/svg/price.svg" alt="price" />
-            <span>Price : ${
-              typeof pet.price === "undefined" || pet.price === null
-                ? "Not available"
-                : pet.price + "$"
-            }</span>
-          </li>
-        </ul>
-        <div class="divider"></div>
-        <div class="flex items-center justify-between">
-          <button class="btn btn-sm btn-outline btn-accent">
-            <img src="./images/svg/like.svg" alt="like" />
-          </button>
-          <button class="btn btn-sm btn-outline btn-accent">Adopt</button>
-          <button class="btn btn-sm btn-outline btn-accent" onClick='fetchExpectedPet(${
-            pet.petId
-          })'>Details</button>
-        </div>
-      </div>
-    `;
-    document.querySelector("#pet-showing-cards").append(card);
-  });
 };
