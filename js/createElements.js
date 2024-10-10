@@ -189,7 +189,7 @@ const showPetInModal = (pet) => {
   dialog.classList = "modal p-4";
 
   dialog.innerHTML = `
-    <div class="modal-box w-8/12 max-w-5xl">
+    <div class="modal-box w-10/12 lg:w-8/12 max-w-5xl">
         <img class='w-full rounded-md' src=${pet.image}/>
         <h3 class="text-lg font-bold">${pet.pet_name}!</h3>
         <div class='flex space-x-4'>
