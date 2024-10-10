@@ -15,10 +15,11 @@ const adoptPet = (id) => {
 
   document.querySelector("#adopt-pet-modal-div").innerHTML = `
   <dialog id="adopt_modal_1" class="modal">
-    <div class="modal-box">
+    <div class="modal-box flex flex-col items-center justify-center">
+      <img src='./images/svg/handshake.svg' alt='handshake'/>
       <h3 class="text-lg font-bold">Congratulation!</h3>
       <p class="py-4">You have successfully adopted!</p>
-      <h3 class="text-lg font-bold">Closing after <span id='adopt-closing-timer'>3</span> </h3>
+      <h3 class="text-3xl font-bold" id='adopt-closing-timer'>3</h3>
     </div>
   </dialog>
   `;
@@ -36,7 +37,7 @@ const adoptPet = (id) => {
     document.querySelector("#adopt-pet-modal-div").innerHTML = "";
     document.querySelector(`#btn-adop-${id}`).innerText = "Adopted";
     document.querySelector(`#btn-adop-${id}`).classList.add("btn-disabled");
-  }, 2000);
+  }, 3000);
 };
 
 // Create pet card
@@ -65,7 +66,7 @@ const createPetCard = (pets) => {
       card.classList = "max-w-[275px] mx-auto border rounded-xl p-4 box-border";
 
       card.innerHTML = `
-    <img class="w-full h-40 rounded-md" src=${pet.image} alt="pet" />
+    <img class="w-[240px] h-40 rounded-md" src=${pet.image} alt="pet" />
       <div>
         <h1 class="text-2xl font-bold">${pet.pet_name}</h1>
         <ul class='text-sm'>
@@ -143,9 +144,9 @@ const showActiveCategory = (id, category) => {
   for (let i = 0; i < 4; i++) {
     document
       .querySelector(`#btn-category-${i + 1}`)
-      .classList.remove("bg-teal-500");
+      .classList.remove("bg-teal-200");
   }
-  document.querySelector(`#btn-category-${id}`).classList.add("bg-teal-500");
+  document.querySelector(`#btn-category-${id}`).classList.add("bg-teal-200");
 
   fetch(`https://openapi.programming-hero.com/api/peddy/category/${category}`)
     .then((res) => {
@@ -163,7 +164,7 @@ const createCategory = (categories) => {
   categories.forEach(({ id, category, category_icon }) => {
     const div = document.createElement("div");
     div.classList =
-      "flex items-center space-x-3 px-5 py-2 border rounded-xl hover:bg-teal-500 hover:text-white cursor-pointer";
+      "flex items-center space-x-3 px-5 py-2 border rounded-full hover:bg-teal-200 text-black cursor-pointer";
     div.id = `btn-category-${id}`;
 
     div.innerHTML = `
